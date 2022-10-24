@@ -12,9 +12,15 @@ class TodoApp extends StatefulWidget {
 }
 
 class _TodoAppState extends State<TodoApp> {
-  List _taskList = [
-    "complete js project within one week",
-    "start learning node js as soon as possible"
+  List<Map> _taskList = [
+    {
+      "title": "complete js project within one week",
+      "doneTaskFlag": false,
+    },
+    {
+      "title": "start learning node js as soon as possible",
+      "doneTaskFlag": false,
+    },
   ];
   bool _doneTask = false;
   @override
@@ -34,16 +40,17 @@ class _TodoAppState extends State<TodoApp> {
       itemCount: _taskList.length,
       itemBuilder: (context, index) {
         return ListTile(
+          leading: Icon(_taskList[index]["doneTaskFlag"]?Icons.check_box_outlined: Icons.check_box_outline_blank),
           title: Text(
-            "${_taskList[index]}",
-            style: _doneTask
+            "${_taskList[index]["title"]}",
+            style: _taskList[index]["doneTaskFlag"]
                 ? TextStyle(
                     color: Colors.grey, decoration: TextDecoration.lineThrough)
                 : TextStyle(color: Colors.black),
           ),
           onTap: () {
             setState(() {
-              _doneTask = !_doneTask;
+              _taskList[index]["doneTaskFlag"] = !_taskList[index]["doneTaskFlag"];
             });
           },
         );
