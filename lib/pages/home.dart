@@ -31,39 +31,7 @@ class _HomeState extends State<Home> {
       body: _buildTodoList(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add_task_outlined),
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Column(
-                    children: [
-                      TextField(
-                        controller: _TaskController,
-                      ),
-                      SizedBox(height: 10),
-                      TextButton(
-                          onPressed: () {
-                            (_TaskController.text != "")
-                                ? setState(() {
-                                    _taskList.add({
-                                      "title": _TaskController.text,
-                                      "doneTaskFlag": false
-                                    });
-                                    _TaskController.clear();
-                                    Navigator.pop(context);
-                                  })
-                                : Navigator.pop(context);
-                          },
-                          child: Text("Save"))
-                    ],
-                  ),
-                );
-              });
-          // setState(() {
-          //   _taskList.add({"title": "text", "doneTaskFlag": false});
-          // });
-        },
+        onPressed: _buildShowDialog,
       ),
     );
   }
@@ -92,5 +60,37 @@ class _HomeState extends State<Home> {
         );
       },
     );
+  }
+
+  Future _buildShowDialog(){
+   return showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Column(
+                  children: [
+                    TextField(
+                      controller: _TaskController,
+                    ),
+                    SizedBox(height: 10),
+                    TextButton(
+                        onPressed: () {
+                          (_TaskController.text != "")
+                              ? setState(() {
+                                  _taskList.add({
+                                    "title": _TaskController.text,
+                                    "doneTaskFlag": false
+                                  });
+                                  _TaskController.clear();
+                                  Navigator.pop(context);
+                                })
+                              : Navigator.pop(context);
+                        },
+                        child: Text("Save"))
+                  ],
+                ),
+              );
+            },
+          );
   }
 }
