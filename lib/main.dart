@@ -5,22 +5,13 @@ void main() {
   runApp(TodoApp());
 }
 
-class TodoApp extends StatefulWidget {
+class TodoApp extends StatelessWidget {
   const TodoApp({super.key});
 
-  @override
-  State<TodoApp> createState() => _TodoAppState();
-}
-
-class _TodoAppState extends State<TodoApp> {
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Home()
       );
   }
-
-
-  
 }

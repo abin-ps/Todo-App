@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -8,7 +9,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
+  TextEditingController _TaskController = TextEditingController();
   List<Map> _taskList = [
     {
       "title": "complete js project within one week",
@@ -20,32 +21,51 @@ class _HomeState extends State<Home> {
     },
   ];
   bool _doneTask = false;
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Todo App"),
-        ),
-        body: _buildTodoList(),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add_task_outlined),
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (_) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [Text("data")],
-                  );
-                });
-              // setState(() {
-              //   _taskList.add({"title": "text", "doneTaskFlag": false});
-              // });
-            
-          },
-        ),
-      );
+      appBar: AppBar(
+        title: Text("Todo App"),
+      ),
+      body: _buildTodoList(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add_task_outlined),
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Column(
+                    children: [
+                      TextField(
+                        controller: _TaskController,
+                      ),
+                      SizedBox(height: 10),
+                      TextButton(
+                          onPressed: () {
+                            (_TaskController.text != "")
+                                ? setState(() {
+                                    _taskList.add({
+                                      "title": _TaskController.text,
+                                      "doneTaskFlag": false
+                                    });
+                                    _TaskController.clear();
+                                    Navigator.pop(context);
+                                  })
+                                : Navigator.pop(context);
+                          },
+                          child: Text("Save"))
+                    ],
+                  ),
+                );
+              });
+          // setState(() {
+          //   _taskList.add({"title": "text", "doneTaskFlag": false});
+          // });
+        },
+      ),
+    );
   }
 
   Widget _buildTodoList() {
