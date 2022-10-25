@@ -43,8 +43,9 @@ class _HomeState extends State<Home> {
     );
   }
 
+// * build list of tasks
   Widget _buildTodoList() {
-    return ListView.builder(
+    return _taskList != null? ListView.builder(
       itemCount: _taskList.length,
       itemBuilder: (context, index) {
         return Padding(
@@ -61,51 +62,29 @@ class _HomeState extends State<Home> {
                       decoration: TextDecoration.lineThrough)
                   : TextStyle(color: Colors.black),
             ),
+
+            //* task completed or not
             onTap: () {
               setState(() {
                 _taskList[index]["doneTaskFlag"] =
                     !_taskList[index]["doneTaskFlag"];
               });
             },
+
+            //* edit task
             onLongPress: () {
               _taskList[index]["doneTaskFlag"]
                   ? null
                   : _buildTaskDialog(_taskList[index]["title"], index,
                       !_taskList[index]["editTaskFlag"]);
-              _taskList[index]["editTaskFlag"] =
-                  !_taskList[index]["editTaskFlag"];
             },
           ),
         );
       },
-    );
+    ) : Center(child: Text("Click Add button to create new task"));
   }
 
-  // Future _buildShowDialog() {
-  //   return showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         title: Column(
-  //           children: [
-  //             TextField(
-  //               controller: _TaskController,
-  //               // textAlign: TextAlign.center,
-  //               autofocus: true,
-  //               maxLength: 25,
-  //               onSubmitted: (value){
-  //                 _saveNewTask();
-  //               },
-  //             ),
-  //             SizedBox(height: 15),
-  //             TextButton(onPressed: _saveNewTask, child: Text("Save"))
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
+//* create new task 
   Future _buildTaskDialog(String text, int index, bool editTaskFlag) {
     editTaskFlag ? _TaskController.text = text : null;
     return showDialog(
@@ -134,23 +113,24 @@ class _HomeState extends State<Home> {
       },
     );
   }
-
+//*save new task
   _saveNewTask() {
     (_TaskController.text != "")
         ? setState(() {
             _taskList
-                .add({"title": _TaskController.text, "doneTaskFlag": false});
+                .add({"title": _TaskController.text, "doneTaskFlag": false, "editTaskFlag" : false});
             _TaskController.clear();
             Navigator.pop(context);
           })
         : Navigator.pop(context);
   }
-
+//*edit excisting task
   _saveEditedTask(int index) {
     (_TaskController.text != "")
         ? setState(() {
             _taskList[index]["title"] = _TaskController.text;
-            // .add({"title": _TaskController.text, "doneTaskFlag": false});
+            
+            print(_taskList[index]["editTaskFlag"]);
             _TaskController.clear();
             Navigator.pop(context);
           })
