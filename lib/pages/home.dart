@@ -8,16 +8,20 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
+//* need to add fav and edit button to tasks
+
 class _HomeState extends State<Home> {
   TextEditingController _TaskController = TextEditingController();
   List<Map> _taskList = [
     {
       "title": "complete js project within one week",
       "doneTaskFlag": false,
+      "editTaskFlag": false,
     },
     {
       "title": "start learning node js as soon as possible",
       "doneTaskFlag": false,
+      "editTaskFlag": false,
     },
   ];
   bool _doneTask = false;
@@ -31,9 +35,9 @@ class _HomeState extends State<Home> {
       body: _buildTodoList(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add_task_outlined),
-        onPressed: (){
+        onPressed: () {
           _TaskController.clear();
-          _buildShowDialog();
+          _buildTaskDialog("", 0, false);
         },
       ),
     );
@@ -63,13 +67,47 @@ class _HomeState extends State<Home> {
                     !_taskList[index]["doneTaskFlag"];
               });
             },
+            onLongPress: () {
+              _taskList[index]["doneTaskFlag"]
+                  ? null
+                  : _buildTaskDialog(_taskList[index]["title"], index,
+                      !_taskList[index]["editTaskFlag"]);
+              _taskList[index]["editTaskFlag"] =
+                  !_taskList[index]["editTaskFlag"];
+            },
           ),
         );
       },
     );
   }
 
-  Future _buildShowDialog() {
+  // Future _buildShowDialog() {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         title: Column(
+  //           children: [
+  //             TextField(
+  //               controller: _TaskController,
+  //               // textAlign: TextAlign.center,
+  //               autofocus: true,
+  //               maxLength: 25,
+  //               onSubmitted: (value){
+  //                 _saveNewTask();
+  //               },
+  //             ),
+  //             SizedBox(height: 15),
+  //             TextButton(onPressed: _saveNewTask, child: Text("Save"))
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
+  Future _buildTaskDialog(String text, int index, bool editTaskFlag) {
+    editTaskFlag ? _TaskController.text = text : null;
     return showDialog(
       context: context,
       builder: (context) {
@@ -81,12 +119,15 @@ class _HomeState extends State<Home> {
                 // textAlign: TextAlign.center,
                 autofocus: true,
                 maxLength: 25,
-                onSubmitted: (value){
-                  _saveNewTask();
+                onSubmitted: (value) {
+                  editTaskFlag ? _saveEditedTask(index) : _saveNewTask();
                 },
               ),
               SizedBox(height: 15),
-              TextButton(onPressed: _saveNewTask, child: Text("Save"))
+              TextButton(
+                  onPressed: () =>
+                      editTaskFlag ? _saveEditedTask(index) : _saveNewTask(),
+                  child: Text("Save"))
             ],
           ),
         );
@@ -99,6 +140,17 @@ class _HomeState extends State<Home> {
         ? setState(() {
             _taskList
                 .add({"title": _TaskController.text, "doneTaskFlag": false});
+            _TaskController.clear();
+            Navigator.pop(context);
+          })
+        : Navigator.pop(context);
+  }
+
+  _saveEditedTask(int index) {
+    (_TaskController.text != "")
+        ? setState(() {
+            _taskList[index]["title"] = _TaskController.text;
+            // .add({"title": _TaskController.text, "doneTaskFlag": false});
             _TaskController.clear();
             Navigator.pop(context);
           })
