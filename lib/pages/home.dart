@@ -12,16 +12,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   TextEditingController _TaskController = TextEditingController();
   List<Map> _taskList = [
-    {
-      "title": "complete js project within one week",
-      "doneTaskFlag": false,
-      "editTaskFlag": false,
-    },
-    {
-      "title": "start learning node js as soon as possible",
-      "doneTaskFlag": false,
-      "editTaskFlag": false,
-    },
   ];
   bool _doneTask = false;
 
@@ -44,7 +34,7 @@ class _HomeState extends State<Home> {
 
 // * build list of tasks
   Widget _buildTodoList() {
-    return _taskList != null? ListView.builder(
+    return _taskList.isNotEmpty? ListView.builder(
       itemCount: _taskList.length,
       itemBuilder: (context, index) {
         return Padding(
@@ -80,7 +70,7 @@ class _HomeState extends State<Home> {
           ),
         );
       },
-    ) : Center(child: Text("Click Add button to create new task"));
+    ) : const Center(child: Text("Click Add button to create new task"));
   }
 
 //* create new task 
