@@ -8,7 +8,6 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-//* need to add fav and edit button to tasks
 
 class _HomeState extends State<Home> {
   TextEditingController _TaskController = TextEditingController();
