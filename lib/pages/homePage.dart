@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(221, 5, 5, 5),
         title: Text(
-          "CheckList",
+          "To-do App",
           style: TextStyle(color: _primaryColor),
         ),
         actions: [
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
               color: Color.fromARGB(221, 5, 5, 5),
               child: Center(
                 child: Text(
-                  "To-Do($count)",
+                  "Tasks($count)",
                   style: TextStyle(color: Colors.white, fontSize: 17),
                 ),
               ),
