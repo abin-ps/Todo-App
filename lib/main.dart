@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_app/view/task_page.dart';
 import 'package:todo_app/themes/theme.dart';
 
-void main() {
+void main() async {
+  //initialize hive database
+  await Hive.initFlutter();
+
+  //Open a box
+  var box = await Hive.openBox("myBox");
+
   runApp(const TodoApp());
 }
 
@@ -13,8 +20,9 @@ class TodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: secColor),
-      home:  TaskPage(),
+      home: TaskPage(),
     );
   }
 }
