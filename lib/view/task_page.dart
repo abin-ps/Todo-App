@@ -39,6 +39,7 @@ class _TaskPageState extends State<TaskPage> {
             taskName: toDoList[index][0],
             taskCompleted: toDoList[index][1],
             onChanged: (value) => checkBoxChanged(value, index),
+            deleteFunction:(context)=> deleteTask(index),
           ),
         ),);
   }
@@ -74,5 +75,12 @@ class _TaskPageState extends State<TaskPage> {
     });
     newTaskController.clear();
     Navigator.of(context).pop();
+  }
+
+  // Delete  task
+  deleteTask(int index){
+    setState(() {
+      toDoList.removeAt(index);
+    });
   }
 }
